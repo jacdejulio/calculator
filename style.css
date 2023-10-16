@@ -1,0 +1,47 @@
+body {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.calculator {
+    height: 400px;
+    width: 340px;
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+}
+
+.calculator,
+.calc_display {
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+.calc_display {
+    height: 20%;
+    text-align: right;
+    margin-bottom: 5px;
+}
+
+.calc_keys {
+    height: 80%;
+}
+
+.keys_row {
+    display: flex;
+    justify-content: space-between;
+}
+
+button {
+    border-radius: 5px;
+    font-size: 15px;
+    height: 60px;
+    width: 80px;
+    margin-bottom: 5px;
+}
+
+.equal,
+.zero {
+    width: 166.7px;
+}
