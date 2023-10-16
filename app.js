@@ -7,40 +7,40 @@ let displayAVal = displayA.textContent;
 
 
 keys.addEventListener('click', e => {
-    let currDisplay = '';
     if (e.target.classList.contains('digit') || e.target.className === "decimal") {
-        if (displayBVal === '0') {
-            displayBVal = e.target.textContent;
+        if (displayAVal === '0') {
+            displayAVal = e.target.textContent;
         } else {
-            displayBVal += e.target.textContent;
+            displayAVal += e.target.textContent;
         }
 
     }
     if (e.target.className === "all-clear") {
-        displayBVal = '0';
-        displayAVal = '';
+        displayAVal = '0';
+        displayBVal = '';
     }
 
     if (e.target.className === "clear") {
-        if (displayBVal.length > 1) {
-            displayBVal = displayBVal.slice(0, displayBVal.length - 1);
+        if (displayAVal.length > 1) {
+            displayAVal = displayAVal.slice(0, displayAVal.length - 1);
 
         } else {
-            displayBVal = '0';
+            displayAVal = '0';
         }
 
     }
 
-    if (e.target.className === "add") {
-        displayAVal = displayBVal + e.target.textContent;
-        displayBVal = '0'
+    if (e.target.className === "add" ||
+        e.target.className === "subtract" ||
+        e.target.className === "multiply" ||
+        e.target.className === "divide") {
+        displayAVal += " " + e.target.textContent + " ";
+        // e.target.classList.add('is-depressed');
     }
 
     if (e.target.className === "equal") {
-        displayAVal = parseFloat(displayAVal.slice(0, displayAVal.length - 1));
-        displayBVal = parseFloat(displayBVal);
-        result = add(displayAVal, displayBVal);
-        displayBVal = result;
+        displayAVal += " " + e.target.textContent;
+        displayBVal = evaluateExpression(displayAVal.split(" "));
     }
 
 
@@ -51,6 +51,29 @@ keys.addEventListener('click', e => {
 });
 
 
-function add(a, b) {
-    return a + b;
+
+function evaluateExpression(arr) {
+    let result = '';
+
+    let a = parseFloat(arr[0]);
+    let b = parseFloat(arr[2]);
+    let operator = arr[1];
+
+    // if (operator === "+") {
+    //     return add(a, b);
+    // }
+
+    switch (operator) {
+        case '+':
+            return result = a + b;
+        case '-':
+            return result = a - b;
+        case '×':
+            return result = a * b;
+        case '÷':
+            if (b === 0) {
+                return result = "Cannot divide by zero";
+            }
+            return result = a / b;
+    }
 }
