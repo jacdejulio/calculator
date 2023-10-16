@@ -35,7 +35,6 @@ keys.addEventListener('click', e => {
         e.target.className === "multiply" ||
         e.target.className === "divide") {
         displayAVal += " " + e.target.textContent + " ";
-        // e.target.classList.add('is-depressed');
     }
 
     if (e.target.className === "equal") {
@@ -58,10 +57,6 @@ function evaluateExpression(arr) {
     let a = parseFloat(arr[0]);
     let b = parseFloat(arr[2]);
     let operator = arr[1];
-
-    // if (operator === "+") {
-    //     return add(a, b);
-    // }
 
     switch (operator) {
         case '+':
