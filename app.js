@@ -7,7 +7,6 @@ const displayResult = document.querySelector('.display-2')
 const keys = document.querySelector('.keys');
 const equal = document.querySelector('#equal');
 const operatorKeys = document.querySelectorAll('.operator')
-const operators = [' ÷ ', ' × ', ' + ', ' - '];
 
 
 keys.addEventListener('click', e => {
@@ -25,8 +24,11 @@ keys.addEventListener('click', e => {
         } else if (num1Content !== '0' &&
             displayOperator.textContent === '') {
             displayNum1.textContent += keyText;
-        } else if (displayNum1.textContent !== '0' &&
-            displayOperator.textContent !== '') {
+        } else if (numResult !== '') {
+            resetValues();
+            displayNum1.textContent += keyText;
+        } else if (num1Content !== '0' &&
+            operatorContent !== '') {
             displayNum2.textContent += keyText;
         }
     }
@@ -53,14 +55,19 @@ keys.addEventListener('click', e => {
         }
 
     } else if (eTarget.className === 'decimal') {
-        if (!num1Content.includes('.') &&
-            equalContent === '') {
+        console.log(num2Content.length)
+        if (operatorContent === '' && !num1Content.includes('.') &&
+            num2Content === '') {
             displayNum1.textContent += keyText;
 
-        } else if (num2Content !== '' &&
+        } else if (num2Content.length >= 1 &&
             !num2Content.includes('.') &&
-            displayEqual.textContent === '') {
+            operatorContent !== '') {
             displayNum2.textContent += keyText;
+        } else if (num2Content === '' &&
+            !num2Content.includes('.') &&
+            operatorContent !== '') {
+            displayNum2.textContent += `0${keyText}`;
         }
 
     } else if (eTarget.className === 'equal') {
@@ -71,11 +78,8 @@ keys.addEventListener('click', e => {
         }
 
     } else if (eTarget.className === 'reset') {
+        resetValues();
         displayNum1.textContent = '0';
-        displayResult.textContent = '';
-        displayOperator.textContent = '';
-        displayNum2.textContent = '';
-        displayEqual.textContent = '';
 
     } else if (eTarget.className === 'delete') {
         if (num1Content.length > 1) {
@@ -87,12 +91,22 @@ keys.addEventListener('click', e => {
         }
     }
 
+
 })
+
+const resetValues = () => {
+    displayNum1.textContent = '';
+    displayResult.textContent = '';
+    displayOperator.textContent = '';
+    displayNum2.textContent = '';
+    displayEqual.textContent = '';
+}
+
 
 
 const operate = (num1, num2, operator) => {
-    let parseNum1 = parseFloat(num1);
-    let parseNum2 = parseFloat(num2);
+    let parseNum1 = parseFloat(num1)
+    let parseNum2 = parseFloat(num2)
     let result = null;
 
     switch (operator) {
