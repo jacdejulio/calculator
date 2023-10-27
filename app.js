@@ -19,21 +19,26 @@ keys.addEventListener('click', e => {
     let equalContent = displayEqual.textContent;
 
     if (eTarget.classList.contains('digit')) {
-        if (num1Content === '0') {
+        if (num1Content === '0' &&
+            operatorContent === '') {
             displayNum1.textContent = keyText;
         } else if (num1Content !== '0' &&
-            displayOperator.textContent === '') {
+            operatorContent === '') {
             displayNum1.textContent += keyText;
-        } else if (numResult !== '') {
+        } else if (num2Content === '0' &&
+            num2Content.length === 1 &&
+            equalContent === '') {
+            displayNum2.textContent = keyText;
+        } else if (num1Content.length >= 1 &&
+            operatorContent !== '' &&
+            equalContent === '') {
+            displayNum2.textContent += keyText;
+        } else if (numResult !== '' && num2Content !== '') {
             resetValues();
             displayNum1.textContent += keyText;
-        } else if (num1Content !== '0' &&
-            operatorContent !== '') {
-            displayNum2.textContent += keyText;
         }
-    }
 
-    else if (eTarget.classList.contains('operator')) {
+    } else if (eTarget.classList.contains('operator')) {
         if (operatorContent === '') {
             displayOperator.textContent = keyText;
 
@@ -72,7 +77,7 @@ keys.addEventListener('click', e => {
 
     } else if (eTarget.className === 'equal') {
         if (num2Content !== '' &&
-            displayEqual.textContent === '') {
+            equalContent === '') {
             displayEqual.textContent += keyText;
             displayResult.textContent = operate(num1Content, num2Content, operatorContent);
         }
@@ -82,16 +87,27 @@ keys.addEventListener('click', e => {
         displayNum1.textContent = '0';
 
     } else if (eTarget.className === 'delete') {
-        if (num1Content.length > 1) {
+        if (num1Content.length > 1 &&
+            num2Content === '' &&
+            operatorContent === '') {
             displayNum1.textContent =
                 displayNum1.textContent.slice(0, num1Content.length - 1);
-
-        } else {
+        } else if (num1Content.length === 1 &&
+            num2Content === '' &&
+            operatorContent === '') {
             displayNum1.textContent = '0';
+        } else if (equalContent !== '') {
+            resetValues();
+            displayNum1.textContent = '0';
+        } else if (num2Content.length > 1 &&
+            operatorContent !== '') {
+            displayNum2.textContent =
+                displayNum2.textContent.slice(0, num2Content.length - 1);
+        } else if (num2Content.length === 1 &&
+            operatorContent !== '') {
+            displayNum2.textContent = '0';
         }
     }
-
-
 })
 
 const resetValues = () => {
