@@ -1,3 +1,9 @@
+// Error handler when dividing by zero the pressing another key operator
+// KB support
+// Display overflow
+// pressing equals 
+// pressing operator 
+
 
 const displayNum1 = document.querySelector('.display-num1')
 const displayNum2 = document.querySelector('.display-num2')
@@ -5,9 +11,9 @@ const displayOperator = document.querySelector('.display-operator')
 const displayEqual = document.querySelector('.display-equal')
 const displayResult = document.querySelector('.display-2')
 const keys = document.querySelector('.keys');
-const equal = document.querySelector('#equal');
-const operatorKeys = document.querySelectorAll('.operator')
-
+const equalBtn = document.querySelector('.equal');
+const equalBtnDefBg = '#6c757d';
+const equalBtnClkBg = '#f6b327';
 
 keys.addEventListener('click', e => {
     const eTarget = e.target;
@@ -44,6 +50,7 @@ keys.addEventListener('click', e => {
         if (numResult === '' &&
             num2Content !== '' &&
             equalContent === '') {
+            equalBtn.style.background = equalBtnDefBg;
             displayResult.textContent = operate(num1Content, num2Content, operatorContent);
             displayNum1.textContent = displayResult.textContent;
             displayResult.textContent = '';
@@ -52,6 +59,7 @@ keys.addEventListener('click', e => {
         }
         else if (numResult !== '' &&
             equalContent !== '') {
+            equalBtn.style.background = equalBtnDefBg;
             displayEqual.textContent = '';
             displayNum1.textContent = displayResult.textContent;
             displayResult.textContent = '';
@@ -85,6 +93,7 @@ keys.addEventListener('click', e => {
     } else if (eTarget.className === 'equal') {
         if (num2Content !== '' &&
             equalContent === '') {
+            equalBtn.style.background = equalBtnClkBg;
             displayEqual.textContent += keyText;
             displayResult.textContent = operate(num1Content, num2Content, operatorContent);
         }
@@ -122,6 +131,7 @@ const resetValues = () => {
     displayOperator.textContent = '';
     displayNum2.textContent = '';
     displayEqual.textContent = '';
+    equalBtn.style.background = equalBtnDefBg;
 }
 
 
@@ -129,7 +139,6 @@ const resetValues = () => {
 const operate = (num1, num2, operator) => {
     let parseNum1 = parseFloat(num1)
     let parseNum2 = parseFloat(num2)
-    let result = null;
 
     switch (operator) {
         case '+':
