@@ -135,30 +135,41 @@ const resetValues = () => {
 }
 
 
-
 const operate = (num1, num2, operator) => {
-    let parseNum1 = parseFloat(num1)
-    let parseNum2 = parseFloat(num2)
+    let parseNum1 = parseFloat(num1);
+    let parseNum2 = parseFloat(num2);
+    let result = 0;
 
     switch (operator) {
         case '+':
-            return parseNum1 + parseNum2;
+            result = parseNum1 + parseNum2;
+            break;
         case '-':
-            return parseNum1 - parseNum2;
+            result = parseNum1 - parseNum2;
+            break;
         case '×':
-            return parseNum1 * parseNum2;
+            result = parseNum1 * parseNum2;
+            break;
         case '÷':
             if (parseNum1 === 0 && parseNum2 === 0) {
                 resetValues();
-                return ('Result is undefined');
+                return 'Result is undefined';
             } else if (parseNum2 === 0) {
                 resetValues();
-                return ('Cannot divide by zero');
+                return 'Cannot divide by zero';
             } else {
-                return parseNum1 / parseNum2;
-            };
+                result = parseNum1 / parseNum2;
+            }
+            break;
     }
 
+    // Check if the result contains a decimal point and has more than 10 characters
+    if (result.toString().includes('.') && result.toString().length > 10) {
+        result = result.toFixed(4);
+    }
+
+    return result;
 }
+
 
 
