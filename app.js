@@ -1,74 +1,117 @@
-const keys = document.querySelector(".calc_keys");
-const digits = document.querySelectorAll(".digit");
-const displayB = document.querySelector(".calc_display_b");
-let displayBVal = displayB.textContent;
-const displayA = document.querySelector(".calc_display_a");
-let displayAVal = displayA.textContent;
+
+const displayNum1 = document.querySelector('.display-num1')
+const displayNum2 = document.querySelector('.display-num2')
+const displayOperator = document.querySelector('.display-operator')
+const displayEqual = document.querySelector('.display-equal')
+const displayResult = document.querySelector('.display-2')
+const keys = document.querySelector('.keys');
+const equal = document.querySelector('#equal');
+const operatorKeys = document.querySelectorAll('.operator')
+const operators = [' ÷ ', ' × ', ' + ', ' - '];
 
 
 keys.addEventListener('click', e => {
-    if (e.target.classList.contains('digit') || e.target.className === "decimal") {
-        if (displayAVal === '0') {
-            displayAVal = e.target.textContent;
-        } else {
-            displayAVal += e.target.textContent;
+    const eTarget = e.target;
+    const keyText = eTarget.textContent;
+    let num1Content = displayNum1.textContent;
+    let num2Content = displayNum2.textContent;
+    let numResult = displayResult.textContent;
+    let operatorContent = displayOperator.textContent;
+    let equalContent = displayEqual.textContent;
+
+    if (eTarget.classList.contains('digit')) {
+        if (num1Content === '0') {
+            displayNum1.textContent = keyText;
+        } else if (num1Content !== '0' &&
+            displayOperator.textContent === '') {
+            displayNum1.textContent += keyText;
+        } else if (displayNum1.textContent !== '0' &&
+            displayOperator.textContent !== '') {
+            displayNum2.textContent += keyText;
+        }
+    }
+
+    else if (eTarget.classList.contains('operator')) {
+        if (operatorContent === '') {
+            displayOperator.textContent = keyText;
+
+        } else if (numResult !== '' &&
+            equalContent !== '') {
+            displayNum1.textContent = displayResult.textContent;
+            displayResult.textContent = '';
+            displayOperator.textContent = keyText;
+            displayNum2.textContent = '';
+            displayEqual.textContent = '';
+
+        } else if (numResult === '' &&
+            equalContent === '') {
+            displayResult.textContent = operate(num1Content, num2Content, operatorContent);
+            displayNum1.textContent = displayResult.textContent;
+            displayResult.textContent = '';
+            displayOperator.textContent = keyText;
+            displayNum2.textContent = '';
         }
 
-    }
-    if (e.target.className === "all-clear") {
-        displayAVal = '0';
-        displayBVal = '';
-    }
+    } else if (eTarget.className === 'decimal') {
+        if (!num1Content.includes('.') &&
+            equalContent === '') {
+            displayNum1.textContent += keyText;
 
-    if (e.target.className === "clear") {
-        if (displayAVal.length > 1) {
-            displayAVal = displayAVal.slice(0, displayAVal.length - 1);
-
-        } else {
-            displayAVal = '0';
+        } else if (num2Content !== '' &&
+            !num2Content.includes('.') &&
+            displayEqual.textContent === '') {
+            displayNum2.textContent += keyText;
         }
 
+    } else if (eTarget.className === 'equal') {
+        if (num2Content !== '' &&
+            displayEqual.textContent === '') {
+            displayEqual.textContent += keyText;
+            displayResult.textContent = operate(num1Content, num2Content, operatorContent);
+        }
+
+    } else if (eTarget.className === 'reset') {
+        displayNum1.textContent = '0';
+        displayResult.textContent = '';
+        displayOperator.textContent = '';
+        displayNum2.textContent = '';
+        displayEqual.textContent = '';
+
+    } else if (eTarget.className === 'delete') {
+        if (num1Content.length > 1) {
+            displayNum1.textContent =
+                displayNum1.textContent.slice(0, num1Content.length - 1);
+
+        } else {
+            displayNum1.textContent = '0';
+        }
     }
 
-    if (e.target.className === "add" ||
-        e.target.className === "subtract" ||
-        e.target.className === "multiply" ||
-        e.target.className === "divide") {
-        displayAVal += " " + e.target.textContent + " ";
-    }
-
-    if (e.target.className === "equal") {
-        displayAVal += " " + e.target.textContent;
-        displayBVal = evaluateExpression(displayAVal.split(" "));
-    }
+})
 
 
-    displayB.textContent = displayBVal;
-    displayA.textContent = displayAVal;
-
-
-});
-
-
-
-function evaluateExpression(arr) {
-    let result = '';
-
-    let a = parseFloat(arr[0]);
-    let b = parseFloat(arr[2]);
-    let operator = arr[1];
+const operate = (num1, num2, operator) => {
+    let parseNum1 = parseFloat(num1);
+    let parseNum2 = parseFloat(num2);
+    let result = null;
 
     switch (operator) {
         case '+':
-            return result = a + b;
+            return parseNum1 + parseNum2;
         case '-':
-            return result = a - b;
+            return parseNum1 - parseNum2;
         case '×':
-            return result = a * b;
+            return parseNum1 * parseNum2;
         case '÷':
-            if (b === 0) {
-                return result = "Cannot divide by zero";
-            }
-            return result = a / b;
+            if (parseNum1 === 0 && parseNum2 === 0) {
+                return ('Result is undefined');
+            } else if (parseNum2 === 0) {
+                return ('Cannot divide by zero');
+            } else {
+                return parseNum1 / parseNum2;
+            };
     }
+
 }
+
+
