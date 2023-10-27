@@ -35,22 +35,14 @@ keys.addEventListener('click', e => {
             displayNum2.textContent += keyText;
         } else if (numResult !== '' && num2Content !== '') {
             resetValues();
+            displayNum1.textContent = ''
             displayNum1.textContent += keyText;
         }
 
     } else if (eTarget.classList.contains('operator')) {
-        if (operatorContent === '') {
-            displayOperator.textContent = keyText;
 
-        } else if (numResult !== '' &&
-            equalContent !== '') {
-            displayNum1.textContent = displayResult.textContent;
-            displayResult.textContent = '';
-            displayOperator.textContent = keyText;
-            displayNum2.textContent = '';
-            displayEqual.textContent = '';
-
-        } else if (numResult === '' &&
+        if (numResult === '' &&
+            num2Content !== '' &&
             equalContent === '') {
             displayResult.textContent = operate(num1Content, num2Content, operatorContent);
             displayNum1.textContent = displayResult.textContent;
@@ -58,16 +50,31 @@ keys.addEventListener('click', e => {
             displayOperator.textContent = keyText;
             displayNum2.textContent = '';
         }
+        else if (numResult !== '' &&
+            equalContent !== '') {
+            displayEqual.textContent = '';
+            displayNum1.textContent = displayResult.textContent;
+            displayResult.textContent = '';
+            displayOperator.textContent = keyText;
+            displayNum2.textContent = '';
+
+
+
+        } else if (num1Content !== '') {
+            displayOperator.textContent = keyText;
+        }
+
+
 
     } else if (eTarget.className === 'decimal') {
-        console.log(num2Content.length)
         if (operatorContent === '' && !num1Content.includes('.') &&
             num2Content === '') {
             displayNum1.textContent += keyText;
 
         } else if (num2Content.length >= 1 &&
             !num2Content.includes('.') &&
-            operatorContent !== '') {
+            operatorContent !== '' &&
+            equalContent === '') {
             displayNum2.textContent += keyText;
         } else if (num2Content === '' &&
             !num2Content.includes('.') &&
@@ -84,7 +91,6 @@ keys.addEventListener('click', e => {
 
     } else if (eTarget.className === 'reset') {
         resetValues();
-        displayNum1.textContent = '0';
 
     } else if (eTarget.className === 'delete') {
         if (num1Content.length > 1 &&
@@ -111,7 +117,7 @@ keys.addEventListener('click', e => {
 })
 
 const resetValues = () => {
-    displayNum1.textContent = '';
+    displayNum1.textContent = '0';
     displayResult.textContent = '';
     displayOperator.textContent = '';
     displayNum2.textContent = '';
@@ -134,8 +140,10 @@ const operate = (num1, num2, operator) => {
             return parseNum1 * parseNum2;
         case '÷':
             if (parseNum1 === 0 && parseNum2 === 0) {
+                resetValues();
                 return ('Result is undefined');
             } else if (parseNum2 === 0) {
+                resetValues();
                 return ('Cannot divide by zero');
             } else {
                 return parseNum1 / parseNum2;
