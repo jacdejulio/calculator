@@ -1,8 +1,5 @@
 // Error handler when dividing by zero the pressing another key operator
 // KB support
-// Display overflow
-// pressing equals 
-// pressing operator 
 
 
 const displayNum1 = document.querySelector('.display-num1')
@@ -46,32 +43,31 @@ keys.addEventListener('click', e => {
         }
 
     } else if (eTarget.classList.contains('operator')) {
-
-        if (numResult === '' &&
-            num2Content !== '' &&
-            equalContent === '') {
-            equalBtn.style.background = equalBtnDefBg;
-            displayResult.textContent = operate(num1Content, num2Content, operatorContent);
-            displayNum1.textContent = displayResult.textContent;
-            displayResult.textContent = '';
-            displayOperator.textContent = keyText;
-            displayNum2.textContent = '';
-        }
-        else if (numResult !== '' &&
+        let operateResult = '';
+        //Press operator after operate()
+        if (numResult !== '' &&
             equalContent !== '') {
             equalBtn.style.background = equalBtnDefBg;
+            displayNum1.textContent = numResult;
             displayEqual.textContent = '';
-            displayNum1.textContent = displayResult.textContent;
-            displayResult.textContent = '';
             displayOperator.textContent = keyText;
             displayNum2.textContent = '';
+            displayResult.textContent = '';
+            displayResult.textContent = operate(num1Content, num2Content, operatorContent);
+        }
+        // //Press operator after operator
+        else if (num1Content !== '' &&
+            num2Content !== '') {
+            displayOperator.textContent = keyText;
+            operateResult = operate(num1Content, num2Content, operatorContent);
+            displayResult.textContent = operateResult;
+            displayNum1.textContent = operateResult;
+            displayNum2.textContent = '';
 
-
-
-        } else if (num1Content !== '') {
+            //Press operator after num1
+        } else if (num1Content !== '' && num2Content === '') {
             displayOperator.textContent = keyText;
         }
-
 
 
     } else if (eTarget.className === 'decimal') {
@@ -96,6 +92,13 @@ keys.addEventListener('click', e => {
             equalBtn.style.background = equalBtnClkBg;
             displayEqual.textContent += keyText;
             displayResult.textContent = operate(num1Content, num2Content, operatorContent);
+        } //Press operator after operate()
+        else if (numResult !== '' &&
+            equalContent !== '') {
+            // displayResult.textContent = '';
+            operateResult = operate(num1Content, num2Content, operatorContent);
+            displayNum1.textContent = operateResult;
+            displayResult.textContent = operate(operateResult, num2Content, operatorContent);
         }
 
     } else if (eTarget.className === 'reset') {
@@ -151,12 +154,9 @@ const operate = (num1, num2, operator) => {
             result = parseNum1 * parseNum2;
             break;
         case '÷':
-            if (parseNum1 === 0 && parseNum2 === 0) {
+            if (parseNum2 === 0) {
                 resetValues();
-                return 'Result is undefined';
-            } else if (parseNum2 === 0) {
-                resetValues();
-                return 'Cannot divide by zero';
+                return 'Math Error';
             } else {
                 result = parseNum1 / parseNum2;
             }
