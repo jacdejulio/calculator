@@ -1,4 +1,4 @@
-// Error handler when dividing by zero the pressing another key operator
+
 // KB support
 
 
@@ -44,7 +44,7 @@ keys.addEventListener('click', e => {
 
     } else if (eTarget.classList.contains('operator')) {
         let operateResult = '';
-        //Press operator after operate()
+        //Press another operator after pressing equal sign
         if (numResult !== '' &&
             equalContent !== '') {
             equalBtn.style.background = equalBtnDefBg;
@@ -55,14 +55,22 @@ keys.addEventListener('click', e => {
             displayResult.textContent = '';
             displayResult.textContent = operate(num1Content, num2Content, operatorContent);
         }
-        // //Press operator after operator
+        //Press another operator without pressing equal sign
         else if (num1Content !== '' &&
             num2Content !== '') {
-            displayOperator.textContent = keyText;
             operateResult = operate(num1Content, num2Content, operatorContent);
-            displayResult.textContent = operateResult;
-            displayNum1.textContent = operateResult;
-            displayNum2.textContent = '';
+            // Error handler when dividing by zero then pressing another key operator
+            if (operateResult === 'Math Error') {
+                resetValues();
+                displayResult.textContent = 'Math Error';
+            } else {
+                displayOperator.textContent = keyText;
+                displayResult.textContent = operateResult;
+                displayNum1.textContent = operateResult;
+                displayNum2.textContent = '';
+            }
+
+
 
             //Press operator after num1
         } else if (num1Content !== '' && num2Content === '') {
