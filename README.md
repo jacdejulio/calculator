@@ -10,4 +10,4 @@
 #### Icons Sources:
 - Escape Key Icon - <a href="https://www.flaticon.com/free-icons/escape" title="escape icons">Escape icons created by Freepik - Flaticon</a>
 - Backspace Key Icon - <a href="https://www.flaticon.com/free-icons/backspace" title="backspace icons">Backspace icons created by Freepik - Flaticon</a>
-- Calculator Icon - <a href="https://www.flaticon.com/free-icons/calculator" title="calculator icons">Calculator icons created by srip - Flaticon</a>
+- Calculator Icon - <a href="https://www.flaticon.com/free-icons/calculator" title="calculator icons">Calculator icons created by Freepik - Flaticon</a>
